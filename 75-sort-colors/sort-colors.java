@@ -14,7 +14,7 @@ class Solution {
         {
             nums[i]=0;
             i++;
-        count0--;
+            count0--;
         }
         while(count1> 0){
             nums[i]=1;
