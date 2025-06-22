@@ -1,33 +1,45 @@
-public class Solution {
-    private final String[] below20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
-                                      "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
-                                      "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-    private final String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
-    private final String[] thousands = {"", "Thousand", "Million", "Billion"};
+class Solution {
+    
+        final static String[] digits = {
+            "", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ","Ten ", "Eleven ", "Twelve ", "Thirteen ", "Fourteen", "Fifteen ", "Sixteen ", "Seventeen ", "Eighteen ", "Nineteen ", "Twenty "
+        };
+
+        final static String[] tens = {
+            "", "Ten ", "Twenty ", "Thirty ", "Forty ", "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "
+        };
+
+        final static String[] powers = {
+            "Hundred ", "Thousand ", "Million ", "Billion " 
+        };
 
     public String numberToWords(int num) {
-        if (num == 0) return "Zero";
-
-        int i = 0;
-        StringBuilder result = new StringBuilder();
-
-        while (num > 0) {
-            int chunk = num % 1000;
-            if (chunk != 0) {
-                String chunkWords = helper(chunk).trim() + " " + thousands[i] + " ";
-                result.insert(0, chunkWords);
-            }
-            num /= 1000;
-            i++;
-        }
-
-        return result.toString().trim();
+        if(num == 0) return "Zero";
+        StringBuilder word = new StringBuilder();
+        toEng(num, word);
+        return word.toString().trim();
     }
-
-    private String helper(int num) {
-        if (num == 0) return "";
-        else if (num < 20) return below20[num] + " ";
-        else if (num < 100) return tens[num / 10] + " " + helper(num % 10);
-        else return below20[num / 100] + " Hundred " + helper(num % 100);
+    private void toEng(int num, StringBuilder w){
+        if(num <= 20){
+            w.append(digits[num]);
+        }else if(num < 100){
+            w.append(tens[(num - num%10)/10]);
+            w.append(digits[num%10]);
+        }else if(num < 1000){
+            w.append(digits[(num - num%100)/100]);
+            w.append(powers[0]);
+            toEng(num%100, w);
+        }else if(num < 1000_000){
+            toEng((num - num%1000)/1000, w);
+            w.append(powers[1]);
+            toEng(num%1000, w);
+        }else if(num < 1000_000_000){
+            toEng((num - num%1000_000)/1000_000, w);
+            w.append(powers[2]);
+            toEng(num%1000_000, w);
+        }else if(num <= Integer.MAX_VALUE){
+            toEng((num - num%1000_000_000)/1000_000_000, w);
+            w.append(powers[3]);
+            toEng(num%1000_000_000, w);
+        }
     }
 }
