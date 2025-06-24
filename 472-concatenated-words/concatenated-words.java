@@ -1,38 +1,61 @@
 import java.util.*;
 
 public class Solution {
+    class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        boolean isWord = false;
+    }
+
+    TrieNode root = new TrieNode();
+
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
         List<String> result = new ArrayList<>();
-        Set<String> wordSet = new HashSet<>(Arrays.asList(words));
-        Map<String, Boolean> memo = new HashMap<>();
 
         for (String word : words) {
             if (word.isEmpty()) continue;
-            wordSet.remove(word);
-            if (canForm(word, wordSet, memo)) {
+            if (canForm(word, 0, root, 0, new HashMap<>())) {
                 result.add(word);
             }
-            wordSet.add(word); 
+            insert(word);
         }
 
         return result;
     }
 
-    private boolean canForm(String word, Set<String> wordSet, Map<String, Boolean> memo) {
-        if (memo.containsKey(word)) return memo.get(word);
+    private void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) {
+                node.children[idx] = new TrieNode();
+            }
+            node = node.children[idx];
+        }
+        node.isWord = true;
+    }
 
-        for (int i = 1; i < word.length(); i++) {
-            String prefix = word.substring(0, i);
-            String suffix = word.substring(i);
-            if (wordSet.contains(prefix)) {
-                if (wordSet.contains(suffix) || canForm(suffix, wordSet, memo)) {
-                    memo.put(word, true);
+    private boolean canForm(String word, int start, TrieNode node, int count, Map<Integer, Boolean> memo) {
+        if (start == word.length()) return count >= 2;
+        if (memo.containsKey(start)) return memo.get(start);
+
+        TrieNode curr = node;
+        for (int i = start; i < word.length(); i++) {
+            int idx = word.charAt(i) - 'a';
+            if (curr.children[idx] == null) {
+                memo.put(start, false);
+                return false;
+            }
+            curr = curr.children[idx];
+            if (curr.isWord) {
+                if (canForm(word, i + 1, node, count + 1, memo)) {
+                    memo.put(start, true);
                     return true;
                 }
             }
         }
 
-        memo.put(word, false);
+        memo.put(start, false);
         return false;
     }
 }
