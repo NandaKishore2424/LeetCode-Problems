@@ -7,8 +7,8 @@ class Solution {
             }
             digits[i]=0;
         }
-        int[] newnumber = new int[digits.length+1];
-        newnumber[0]=1;
-        return newnumber;
+        int[] newn=new int[digits.length+1];
+        newn[0]=1;
+        return newn;
     }
 }
