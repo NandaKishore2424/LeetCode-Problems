@@ -4,15 +4,15 @@ class Solution {
         StringBuilder str=new StringBuilder(s);
         for(int i=0;i<str.length();i++){
             char ch=str.charAt(i);
-            if(ch=='(')
-            {
+            if(ch=='('){
                 st.push(i);
             }
             else if(ch==')'){
                 if(!st.isEmpty()){
                     st.pop();
                 }
-                else{
+                else
+                {
                     str.deleteCharAt(i);
                     i--;
                 }
@@ -22,6 +22,5 @@ class Solution {
             str.deleteCharAt(st.pop());
         }
         return str.toString();
-
     }
 }
