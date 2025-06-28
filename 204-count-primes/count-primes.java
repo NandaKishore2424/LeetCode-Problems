@@ -1,34 +1,21 @@
 class Solution {
-    public int countPrimes(int n)
-    {
-        if(n==0 || n==1 || n==2)
-        {
-            return 0;
-        }
-        n = n-1;
-        int count = n-1;
-        boolean[] isPrime = new boolean[n+1]; 
-        Arrays.fill(isPrime,true);
-        isPrime[0] = false; 
-        isPrime[1] = false; 
-        int i,j;
-        for(i=2 ; i<=Math.sqrt(n); i++)
-        {
-            if(isPrime[i]==true)
-            {
-               for(j=i*i ; j<=n ; j = j+i)
-               {
-                if(isPrime[j]==true)
-                {
-                   isPrime[j] = false; 
-                   count--;
+    public int countPrimes(int n) {
+        if(n<=2) return 0;
+        boolean[] isPrime=new boolean[n];
+        Arrays.fill(isPrime, true);
+        isPrime[0]=false;
+        isPrime[1]=false;
+        for(int i=2;i*i<n;i++){
+            if(isPrime[i]){
+                for(int j=i*i;j<n;j+=i){
+                    isPrime[j]=false;
                 }
-               }
             }
-        }  
+        }
+        int count=0;
+        for(boolean prime:isPrime){
+            if(prime) count++;
+        }
         return count;
-
     }
-} 
-
-
+}
