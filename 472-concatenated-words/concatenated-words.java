@@ -1,38 +1,32 @@
-class Solution {
-    public List<String> findAllConcatenatedWordsInADict(String[] words) 
-    {
-        List <String> result = new ArrayList<>();
-        Set <String>  wordSet = new HashSet<>(Arrays.asList(words));
-        Arrays.sort(words,(a,b) -> a.length()- b.length());
-        for(String word : words)
-        {
-            if(word.isEmpty()) continue;
-            wordSet.remove(word);
-            if(canFormDp(word,wordSet))
-            {
-                result.add(word);
-            }
-           wordSet.add(word);
-        }
-        return result;
-    }
-    private boolean canFormDp(String word, Set<String>  wordSet)
-    {
-        boolean[] dp = new boolean[word.length()+1];
-        dp[0]  = true;
-        for(int i=1; i<= word.length();i++)
-        {
-            for(int j=0;j<i;j++)
-            {
-                if(dp[j] && wordSet.contains(word.substring(j,i)))
-                {
-                 dp[i] = true;
-                 break;
-                }
-            }
-        }
-        return dp[word.length()];
-    }
-    
+public class Solution {
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        List<String> res = new ArrayList<>();
+        Set<String> dict = new HashSet<>(Arrays.asList(words));
 
+        for (String word : words) {
+            if (canForm(word, dict, new HashMap<>())) {
+                res.add(word);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean canForm(String word, Set<String> dict, Map<String, Boolean> memo) {
+        if (memo.containsKey(word)) return memo.get(word);
+
+        for (int i = 1; i < word.length(); i++) {
+            String prefix = word.substring(0, i);
+            String suffix = word.substring(i);
+
+            if (dict.contains(prefix) && 
+                (dict.contains(suffix) || canForm(suffix, dict, memo))) {
+                memo.put(word, true);
+                return true;
+            }
+        }
+
+        memo.put(word, false);
+        return false;
+    }
 }
