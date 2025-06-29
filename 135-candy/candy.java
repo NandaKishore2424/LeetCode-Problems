@@ -18,5 +18,6 @@ class Solution {
             total+=c;
         }
         return total;
+        
     }
 }
