@@ -30,3 +30,4 @@ class Solution {
         return dp[word.length()];
     }
 }
+
