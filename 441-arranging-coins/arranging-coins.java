@@ -1,9 +1,7 @@
 class Solution {
     public int arrangeCoins(int n) {
-        for (long i = 1; ; i++) {
-            long sum = (i * (i + 1)) / 2;
-            if (sum > n) return (int)(i - 1);
-            if (sum == n) return (int)i;
-        }
+        int carry =(int) Math.sqrt(8L*n + 1) ; 
+        int sol =  (-1 + carry)/2;
+        return sol; 
     }
 }
