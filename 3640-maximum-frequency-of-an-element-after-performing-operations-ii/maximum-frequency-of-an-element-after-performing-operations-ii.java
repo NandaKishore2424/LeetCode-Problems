@@ -1,53 +1,37 @@
 class Solution {
-    public int maxFrequency(int[] nums, int k, int numOperations) {
-        if (nums.length == 0) 
-            return 0;
+    public int maxFrequency(int[] nums, int k, int ops) {
+        int res = 0;
         Arrays.sort(nums);
+        int left = 0;
+        int right = 0;
         int n = nums.length;
-        Map<Integer, Integer> freq = new HashMap<>();
-        for (int x : nums) 
-            freq.put(x, freq.getOrDefault(x, 0) + 1);
-
-        int ans = 1;
-
-        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {
-            int key = e.getKey(), val = e.getValue();
-            int low = key - k, high = key + k;
-
-            int left  = lowerBound(nums, low);          
-            int right = upperBound(nums, high);         
-
-            int inRange  = right - left;
-            int visited  = inRange - val;
-            int minLoop  = Math.min(visited, numOperations);
-            ans = Math.max(ans, val + minLoop);
+        int i = 0;
+        // case 1, num is in the arr
+        while (i < n) {
+            int val = nums[i];
+            int same = 0;
+            while (i < n && nums[i] == val) {
+                same++;
+                i++;
+            }
+            while (right < n && nums[right] <= val + k) {
+                right++;
+            }
+            while (left < n && nums[left] < val - k) {
+                left++;
+            }
+            res = Math.max(res, Math.min(same + ops, right - left));
         }
-
-        int l = 0;
-        for (int r = 0; r < n; r++) {
-            while (l <= r && nums[r] - nums[l] > 2 * k) l++;
-            int w = r - l + 1;
-            ans = Math.max(ans, Math.min(w, numOperations));
+        // case 2, num is not in the arr
+        left = 0;
+        right = 0;
+        while (right < n) {
+            while (right < n && (long) nums[left] + k + k >= nums[right]) {
+                right++;
+            }
+            res = Math.max(res, Math.min(right - left, ops));
+            left++;
         }
-        return ans;
-    }
-
-    private int lowerBound(int[] a, int target) {
-        int l = 0, r = a.length; 
-        while (l < r) {
-            int m = (l + r) >>> 1;
-            if (a[m] < target) l = m + 1; else r = m;
-        }
-        return l;
-    }
-
-
-    private int upperBound(int[] a, int target) {
-        int l = 0, r = a.length; 
-        while (l < r) {
-            int m = (l + r) >>> 1;
-            if (a[m] <= target) l = m + 1; else r = m;
-        }
-        return l;
+        return res;
     }
 }
