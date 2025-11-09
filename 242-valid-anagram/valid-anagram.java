@@ -1,15 +1,10 @@
-import java.util.Arrays;
-
-public class Solution {
+class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) return false;
-
-        char[] sArr = s.toCharArray();
-        char[] tArr = t.toCharArray();
-
-        Arrays.sort(sArr);
-        Arrays.sort(tArr);
-
-        return Arrays.equals(sArr, tArr);
+        if(s.length()-1 != t.length()-1) return false;
+        char[] a=s.toCharArray();
+        char[] b=t.toCharArray();
+        Arrays.sort(a);
+        Arrays.sort(b);
+        return Arrays.equals(a,b);
     }
 }
