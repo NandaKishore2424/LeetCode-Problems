@@ -1,13 +1,13 @@
 class Solution {
-    public void moveZeroes(int[] arr) {
-        int point=0;
-        for(int i=0;i<arr.length;i++){
-            if(arr[i]!=0){
-                arr[point++]=arr[i];
+    public void moveZeroes(int[] nums) {
+        int left=0;
+        for(int right=0;right<nums.length;right++){
+            if(nums[right]!=0){
+                int temp=nums[right];
+                nums[right]=nums[left];
+                nums[left]=temp;
+                left++;
             }
-        }
-        for(int i=point;i<arr.length;i++){
-            arr[i]=0;
         }
     }
 }
