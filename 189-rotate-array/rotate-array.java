@@ -6,7 +6,7 @@ class Solution {
         nanda(nums, k, nums.length-1); //- step 3 rotate remaining  k, n-1
     }
     private void nanda(int[] nums, int start, int last){
-        while(start<last){
+        while(start<last){ //O(N)
             int temp=nums[start];
             nums[start]=nums[last];
             nums[last]=temp;
