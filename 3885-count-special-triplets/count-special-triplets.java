@@ -1,29 +1,23 @@
 class Solution {
+    static int[] f = new int[100001];
+    static int[] r = new int[100001];
+    final int MOD = 1_000_000_007;
     public int specialTriplets(int[] nums) {
-        final long MOD = 1_000_000_007;
-        Map<Integer, Integer> right = new HashMap<>();
-        Map<Integer, Integer> left = new HashMap<>();
-
-        for (int x : nums) {
-            right.put(x, right.getOrDefault(x, 0) + 1);
+        for(int n: nums) {
+            r[n]++;
         }
-
-        long ans = 0;
-
-        for (int j = 0; j < nums.length; j++) {
-            int mid = nums[j];
-            right.put(mid, right.get(mid) - 1);
-
-            int target = mid * 2;
-
-            long leftCount = left.getOrDefault(target, 0);
-            long rightCount = right.getOrDefault(target, 0);
-
-            ans = (ans + (leftCount * rightCount) % MOD) % MOD;
-
-            left.put(mid, left.getOrDefault(mid, 0) + 1);
+        int count = 0, t;
+        for(int n: nums) {
+            r[n]--;
+            t = n << 1;
+            if(t < f.length) {
+            count = (count + (int)((1L * f[t] * r[t]) % MOD)) % MOD;
+            }
+            f[n]++;
         }
-
-        return (int) ans;
+        for(int n: nums) {
+            f[n] = 0;
+        }
+        return count;
     }
 }
