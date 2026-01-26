@@ -7,9 +7,9 @@ class Solution {
                 arr[i][j]=arr[j][i];
                 arr[j][i]=temp;
             }
-        }
+        }  
         for(int i=0;i<n;i++){
-            int left=0, right=n-1;
+            int left=0,right=n-1;
             while(left<right){
                 int temp=arr[i][left];
                 arr[i][left]=arr[i][right];
@@ -17,6 +17,6 @@ class Solution {
                 left++;
                 right--;
             }
-        }
+        }  
     }
 }
